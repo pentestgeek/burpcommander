@@ -10,7 +10,7 @@ include Celluloid::Internals::Logger
 
 options = {}
 args = OptionParser.new do |opts|
-	opts.banner = "burpcommander VERSION: 1.0.0  -  UPDATED: 08/28/2018\r\n\r\n"
+	opts.banner = "burpcommander VERSION: 1.0.1  -  UPDATED: 08/29/2018\r\n\r\n"
 	opts.on("-t", "--target [IP Address]", "\tDefaults to 127.0.0.1") { |target| options[:target] = target }
 	opts.on("-p", "--port  [Port Number]", "\tDefaults to 1337") { |port| options[:port] = port }	
 	opts.on("-k", "--key [API Key]", "\tIf you require an API key specify it here") { |key| options[:key] = key }

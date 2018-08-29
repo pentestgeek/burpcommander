@@ -2,16 +2,21 @@
 Ruby command-line interface to Burp Suite's REST API
 
 # Usage
-	$ ./burpcommander.rb -h               
-		burpcommander VERSION: 1.0.0  -  UPDATED: 08/28/2018                            
+	burpcommander VERSION: 1.0.1  -  UPDATED: 08/29/2018
 
-    	-t, --target [IP Address]           Defaults to 127.0.0.1                   
-   		-p, --port  [Port Number]           Defaults to 1337                        
-   		-k, --key [API Key]                 If you require an API key specify it here
+    	-t, --target [IP Address]           Defaults to 127.0.0.1
+    	-p, --port  [Port Number]           Defaults to 1337
+    	-k, --key [API Key]                 If you require an API key specify it here
     	-i, --issue-type-id [String]        String to search for.  Example: "1048832"
     	-n, --issue-name [String]           String to search for.  Example: "Command Injection"
     	-D, --DESCRIPTION                   Returns the description of a requested issue
-    	-v, --verbose                       Enables verbose output                  
+    	-M, --METRICS                       Returns the scan_metrics for a given task_id
+    	-I, --ISSUES [Optional Number]      Returns the issue_events of a given task_id
+    	-s, --scan [Complete URL]           Example: https://scantarget.com
+    	-S, --scan-id [Number]              Returns ScanProgress for a given task_id
+    	-U, --username [String]             Username to supply for an authenticated scan
+    	-P, --password [String]             Password to supply for an authenticated scan
+    	-v, --verbose                       Enables verbose output
 
 
 # Example
