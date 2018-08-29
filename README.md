@@ -31,3 +31,15 @@ Ruby command-line interface to Burp Suite's REST API
 
 	I, [2018-08-29T15:27:09.310594 #18919]  INFO -- : Successfuly initiated task_id: 4 against www.youcanattackme.com
 
+# Query Scan Progress
+	./burpcommander.rb -S 4 -M
+
+	{"crawl_requests_made"=>2264,
+ 	"crawl_requests_queued"=>0,
+ 	"audit_queue_items_completed"=>0,
+ 	"audit_queue_items_waiting"=>51,
+ 	"audit_requests_made"=>247,
+ 	"audit_network_errors"=>10,
+ 	"issue_events"=>21}
+
+
