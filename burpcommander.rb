@@ -2,6 +2,10 @@
 require 'net/https'
 require 'optparse'
 require 'crack'
+require 'celluloid/current'
+require 'pry'
+require 'pp'
+include Celluloid::Internals::Logger
 
 
 options = {}
@@ -12,7 +16,13 @@ args = OptionParser.new do |opts|
 	opts.on("-k", "--key [API Key]", "\tIf you require an API key specify it here") { |key| options[:key] = key }
 	opts.on("-i", "--issue-type-id [String]", "\tString to search for.  Example: \"1048832\"") { |id| options[:id] = id }
 	opts.on("-n", "--issue-name [String]", "\tString to search for.  Example: \"Command Injection\"") { |name| options[:name] = name }
-	opts.on("-D", "--DESCRIPTION", "\tReturns the description of a requested issue") { |desc| options[:desc] = desc }
+	opts.on("-D", "--DESCRIPTION", "\tReturns the description of a requested issue") { |desc| options[:desc] = true }
+	opts.on("-M", "--METRICS", "\tReturns the scan_metrics for a given task_id") { |metrics| options[:metrics] = metrics }
+	opts.on("-I", "--ISSUES [Optional Number]", "\tReturns the issue_events of a given task_id") { |issues| options[:issues] = issues }
+	opts.on("-s", "--scan [Complete URL]", "\tExample: https://scantarget.com") { |scanurl| options[:scanurl] = true }
+	opts.on("-S", "--scan-id [Number]", "\tReturns ScanProgress for a given task_id") { |taskid| options[:taskid] = taskid }
+	opts.on("-U", "--username [String]", "\tUsername to supply for an authenticated scan") { |username| options[:username] = username }
+	opts.on("-P", "--password [String]", "\tPassword to supply for an authenticated scan") { |password| options[:password] = password }
 	opts.on("-v", "--verbose", "\tEnables verbose output\r\n\r\n") { |v| options[:verbose] = true }
 end
 args.parse!(ARGV)
@@ -30,6 +40,33 @@ class Burpcommander
 		self.path = options[:key] ? "/#{options[:key]}/v0.1/" : "/v0.1/"
 		self.http = setup_http
 		self.issues = get_issues
+	end
+
+	def launch_scan
+		path = self.path + "/scan"
+		username = options[:username] ? options[:username] : ""
+		password = options[:password] ? options[:password] : ""
+		post = "{\"application_logins\":[{\"password\":\"" +
+			"#{password}\",\"username\":\"#{username}\"" +
+			"}],\"urls\":[\"#{options[:scanurl]}\"]}"
+		response = http.post(path, post, {})
+		if response.code == "201"
+			info "Successfuly initiated task_id: #{response.header["location"]} against #{options[:scanurl]}"
+		else
+			warn "Error launching scan against #{options[:scanurl]}"
+		end
+	end
+
+	def scan_progress
+		path = self.path + "/scan/" + options[:taskid]
+		response = http.get(path, {})
+		progress = Crack::JSON.parse(response.body)
+		return progress["scan_metrics"] if options[:metrics]
+		if options.has_key? :issues
+			return progress["issue_events"][options[:issues].to_i-1] if options[:issues]
+			return progress["issue_events"]
+		end
+		return progress
 	end
 
 	def issue_by_name(name)
@@ -67,6 +104,7 @@ end
 
 
 bc = Burpcommander.new(options)
-puts "#{bc.uri}#{bc.path}"
 puts bc.issue_by_name(options[:name]) if options[:name]
 puts bc.issue_by_id(options[:id]) if options[:id]
+bc.launch_scan if options[:scanurl]
+pp bc.scan_progress if options[:taskid]
