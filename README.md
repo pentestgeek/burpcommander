@@ -31,7 +31,9 @@ Ruby command-line interface to Burp Suite's REST API
 
 	I, [2018-08-29T15:27:09.310594 #18919]  INFO -- : Successfuly initiated task_id: 4 against www.youcanattackme.com
 
-# Query Scan Progress
+# Query Scan Information
+Get the scan_metrics of a given scan.
+
 	./burpcommander.rb -S 4 -M
 
 	{"crawl_requests_made"=>2264,
@@ -42,4 +44,16 @@ Ruby command-line interface to Burp Suite's REST API
  	"audit_network_errors"=>10,
  	"issue_events"=>21}
 
+Get issue number 1 from a given scan.
 
+	./burpcommander.rb -S 4 -I 1
+
+	{"name"=>"File upload functionality",
+ 	"type_index"=>5245312,
+ 	"serial_number"=>"6437447914508597248",
+ 	"origin"=>"http://www.youcanattackme.com",
+ 	"path"=>"/vulnerabilities/upload/",
+ 	"severity"=>"info",
+ 	"confidence"=>"certain",
+ 	"description"=>
+	"The page contains a form which is used to submit a user-supplied...

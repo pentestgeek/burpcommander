@@ -63,7 +63,7 @@ class Burpcommander
 		progress = Crack::JSON.parse(response.body)
 		return progress["scan_metrics"] if options[:metrics]
 		if options.has_key? :issues
-			return progress["issue_events"][options[:issues].to_i-1] if options[:issues]
+			return progress["issue_events"][options[:issues].to_i-1]["issue"] if options[:issues]
 			return progress["issue_events"]
 		end
 		return progress
