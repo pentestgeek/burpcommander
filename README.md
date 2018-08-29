@@ -19,10 +19,15 @@ Ruby command-line interface to Burp Suite's REST API
     	-v, --verbose                       Enables verbose output
 
 
-# Example
+# Generic Example
 	./burpcommander.rb -k [API Key] -n "command injection" -D
 
 ## Command Output
 <p>Operating system command injection vulnerabilities arise when an application incorporates user-controllable data into a command that is processed by a shell command interpreter. If the user data is not strictly validated, an attacker can use shell metacharacters to modify the command that is executed, and inject arbitrary further commands that will be executed by the server.</p> 
 <p>OS command injection vulnerabilities are usually very serious and may lead to compromise of the server hosting the application, or of the application's own data and functionality. It may also be possible to use the server as a platform for attacks against other systems. The exact potential for exploitation depends upon the security context in which the command is executed, and the privileges that this context has regarding sensitive resources on the server.</p>                                
+
+# Launch a Scan
+	./burpcommander.rb -s www.youcanattackme.com -U admin -P password
+
+	I, [2018-08-29T15:27:09.310594 #18919]  INFO -- : Successfuly initiated task_id: 4 against www.youcanattackme.com
 

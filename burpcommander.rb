@@ -19,7 +19,7 @@ args = OptionParser.new do |opts|
 	opts.on("-D", "--DESCRIPTION", "\tReturns the description of a requested issue") { |desc| options[:desc] = true }
 	opts.on("-M", "--METRICS", "\tReturns the scan_metrics for a given task_id") { |metrics| options[:metrics] = metrics }
 	opts.on("-I", "--ISSUES [Optional Number]", "\tReturns the issue_events of a given task_id") { |issues| options[:issues] = issues }
-	opts.on("-s", "--scan [Complete URL]", "\tExample: https://scantarget.com") { |scanurl| options[:scanurl] = true }
+	opts.on("-s", "--scan [Complete URL]", "\tExample: https://scantarget.com") { |scanurl| options[:scanurl] = scanurl }
 	opts.on("-S", "--scan-id [Number]", "\tReturns ScanProgress for a given task_id") { |taskid| options[:taskid] = taskid }
 	opts.on("-U", "--username [String]", "\tUsername to supply for an authenticated scan") { |username| options[:username] = username }
 	opts.on("-P", "--password [String]", "\tPassword to supply for an authenticated scan") { |password| options[:password] = password }
@@ -43,7 +43,7 @@ class Burpcommander
 	end
 
 	def launch_scan
-		path = self.path + "/scan"
+		path = self.path + "scan"
 		username = options[:username] ? options[:username] : ""
 		password = options[:password] ? options[:password] : ""
 		post = "{\"application_logins\":[{\"password\":\"" +
@@ -58,7 +58,7 @@ class Burpcommander
 	end
 
 	def scan_progress
-		path = self.path + "/scan/" + options[:taskid]
+		path = self.path + "scan/" + options[:taskid]
 		response = http.get(path, {})
 		progress = Crack::JSON.parse(response.body)
 		return progress["scan_metrics"] if options[:metrics]
