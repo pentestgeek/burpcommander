@@ -6,8 +6,8 @@ Ruby command-line interface to Burp Suite's REST API
 		burpcommander VERSION: 1.0.0  -  UPDATED: 08/28/2018                            
 
     	-t, --target [IP Address]           Defaults to 127.0.0.1                   
-   	-p, --port  [Port Number]           Defaults to 1337                        
-   	-k, --key [API Key]                 If you require an API key specify it here
+   		-p, --port  [Port Number]           Defaults to 1337                        
+   		-k, --key [API Key]                 If you require an API key specify it here
     	-i, --issue-type-id [String]        String to search for.  Example: "1048832"
     	-n, --issue-name [String]           String to search for.  Example: "Command Injection"
     	-D, --DESCRIPTION                   Returns the description of a requested issue
