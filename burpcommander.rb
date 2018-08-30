@@ -117,7 +117,7 @@ class Burpcommander
 end
 
 bc = Burpcommander.new(options)
-puts bc.issue_by_name(options[:name]) if options[:name]
-puts bc.issue_by_id(options[:id]) if options[:id]
+pp bc.issue_by_name(options[:name]) if options[:name]
+pp bc.issue_by_id(options[:id]) if options[:id]
 bc.launch_scan if options[:scanurl]
 pp bc.scan_progress if options[:taskid]
