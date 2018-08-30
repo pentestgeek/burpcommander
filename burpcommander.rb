@@ -39,6 +39,7 @@ class Burpcommander
 		self.uri = URI.parse("http://#{target}:#{port}")
 		self.path = options[:key] ? "/#{options[:key]}/v0.1/" : "/v0.1/"
 		self.http = setup_http
+		verify_api_key if options[:key]
 		self.issues = get_issues
 	end
 
@@ -100,8 +101,20 @@ class Burpcommander
 			http.use_ssl = false
 			return http
 		end
-end
 
+		def verify_api_key
+			response = http.get(self.path {})
+			if response.code == "200"
+				info "Validated API Key" if options[:verbose]
+			elsif response.code == "401"
+				warn "Invalid API Key specified"
+				exit
+			else
+				warn "Something bad happened :("
+				exit
+			end
+		end
+end
 
 bc = Burpcommander.new(options)
 puts bc.issue_by_name(options[:name]) if options[:name]
