@@ -16,6 +16,9 @@ Ruby command-line interface to Burp Suite's REST API
     	-S, --scan-id [Number]              Returns ScanProgress for a given task_id
     	-U, --username [String]             Username to supply for an authenticated scan
     	-P, --password [String]             Password to supply for an authenticated scan
+        -x, --proxy [Proxy HOST:PORT]       Example: 127.0.0.1:8080
+            --proxy-username [Proxy user]   Proxy username (if any)
+            --proxy-password [Proxy pass]   Proxy password (if any)
     	-v, --verbose                       Enables verbose output
 
 
@@ -30,6 +33,11 @@ Ruby command-line interface to Burp Suite's REST API
 	./burpcommander.rb -s www.youcanattackme.com -U admin -P password
 
 	I, [2018-08-29T15:27:09.310594 #18919]  INFO -- : Successfuly initiated task_id: 4 against www.youcanattackme.com
+
+# Launch a Scan with Proxy
+    ./burpcommander.rb -s http://testphp.vulnweb.com -U admin -P password -x 127.0.0.1:8080 --proxy-username user --proxy-password pass
+
+    I, [2018-09-26T10:30:39.540832 #3104]  INFO -- : Successfuly initiated task_id: 25 against http://testphp.vulnweb.com
 
 # Query Scan Information
 Get the scan_metrics of a given scan.

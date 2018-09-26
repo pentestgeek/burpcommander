@@ -24,8 +24,8 @@ args = OptionParser.new do |opts|
 	opts.on("-U", "--username [String]", "\tUsername to supply for an authenticated scan") { |username| options[:username] = username }
 	opts.on("-P", "--password [String]", "\tPassword to supply for an authenticated scan") { |password| options[:password] = password }
 	opts.on("-x", "--proxy [Proxy HOST:PORT]", "\tExample: 127.0.0.1:8080") { |proxy| options[:proxy] = proxy }
-	opts.on("--proxy-username [Proxy username]", "\tProxy username (if any)") { |proxy_username| options[:proxy_username] = proxy_username }
-	opts.on("--proxy-password [Proxy password]", "\tProxy password (if any)") { |proxy_password| options[:proxy_password] = proxy_password }
+	opts.on(nil,"--proxy-username [Proxy user]", "\tProxy username (if any)") { |proxy_username| options[:proxy_username] = proxy_username }
+	opts.on(nil,"--proxy-password [Proxy pass]", "\tProxy password (if any)") { |proxy_password| options[:proxy_password] = proxy_password }
 	opts.on("-v", "--verbose", "\tEnables verbose output\r\n\r\n") { |v| options[:verbose] = true }
 end
 args.parse!(ARGV)
