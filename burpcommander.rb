@@ -23,6 +23,9 @@ args = OptionParser.new do |opts|
 	opts.on("-S", "--scan-id [Number]", "\tReturns ScanProgress for a given task_id") { |taskid| options[:taskid] = taskid }
 	opts.on("-U", "--username [String]", "\tUsername to supply for an authenticated scan") { |username| options[:username] = username }
 	opts.on("-P", "--password [String]", "\tPassword to supply for an authenticated scan") { |password| options[:password] = password }
+	opts.on("-x", "--proxy [Proxy HOST:PORT]", "\tExample: 127.0.0.1:8080") { |proxy| options[:proxy] = proxy }
+	opts.on("--proxy-username [Proxy username]", "\tProxy username (if any)") { |proxy_username| options[:proxy_username] = proxy_username }
+	opts.on("--proxy-password [Proxy password]", "\tProxy password (if any)") { |proxy_password| options[:proxy_password] = proxy_password }
 	opts.on("-v", "--verbose", "\tEnables verbose output\r\n\r\n") { |v| options[:verbose] = true }
 end
 args.parse!(ARGV)
@@ -30,7 +33,7 @@ args.parse!(ARGV)
 
 class Burpcommander
 	attr_accessor :apikey, :http, :target, :headers, :verbose, 
-		:port, :uri, :path, :issues, :options
+		:port, :uri, :path, :issues, :options, :proxy, :proxy_username, :proxy_password
 
 	def initialize(options)
 		self.options = options
@@ -97,9 +100,19 @@ class Burpcommander
 		end
 
 		def setup_http
-			http = Net::HTTP.new(uri.host, uri.port)
-			http.use_ssl = false
-			return http
+			$proxy_addr = nil
+			$proxy_port = nil
+
+			if options[:proxy]
+				$proxy = options[:proxy].strip.split(':')
+				$proxy_addr = $proxy[0].strip
+				$proxy_port = $proxy[1].strip
+			end
+			
+			result = Net::HTTP::Proxy($proxy_addr, $proxy_port, options[:proxy_username], options[:proxy_password]).start(uri.host, uri.port) {|http| 
+				http.use_ssl = false
+				return http
+			} 
 		end
 
 		def verify_api_key
